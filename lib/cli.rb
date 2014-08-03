@@ -1,19 +1,17 @@
 class CLI
-  attr_reader :command, :printer
+  attr_reader :command
 
   def initialize
     @command = ""
-    @printer = MessagePrinter.new
   end
 
   def start
-    printer.intro
-    until finished?
-      printer.command_request
+    puts "Welcome to Numbermind."
+    until exit?
+      print "Enter your command: "
       @command = gets.strip
       process_initial_commands
     end
-    printer.ending
   end
 
   private
@@ -21,12 +19,13 @@ class CLI
   def process_initial_commands
     case
     when play?
-      game = Game.new(printer)
-      game.play
+      puts "Game initialized."
     when instructions?
-      printer.game_instructions
+      puts "These are the instructions."
+    when exit?
+      puts "Thanks for playing."
     else
-      printer.not_a_valid_command
+      puts "The command was invalid."
     end
   end
 
@@ -38,7 +37,7 @@ class CLI
     command == "i"
   end
 
-  def finished?
+  def exit?
     command == "q" || command == "quit"
   end
 end
