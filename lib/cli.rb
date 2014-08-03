@@ -1,8 +1,10 @@
 class CLI
-  attr_reader :command
+  attr_reader :command, :guess, :random_number
 
   def initialize
-    @command = ""
+    @command       = ""
+    @guess         = 0
+    @random_number = 0
   end
 
   def start
@@ -20,6 +22,22 @@ class CLI
     case
     when play?
       puts "Game initialized."
+      puts "Guess a number between 0 and 1000"
+      @random_number = Random.rand(0..1000)
+      @guess         = 0
+      until win? || exit?
+        print "Enter a guess: "
+        @command = gets.strip
+        @guess   = @command.to_i
+        case
+        when above?
+          puts "Your guess is above."
+        when below?
+          puts "Your guess is below."
+        when win?
+          puts "You won!"
+        end
+      end
     when instructions?
       puts "These are the instructions."
     when exit?
@@ -27,6 +45,18 @@ class CLI
     else
       puts "The command was invalid."
     end
+  end
+
+  def win?
+    guess == random_number
+  end
+
+  def above?
+    guess > random_number
+  end
+
+  def below?
+    guess < random_number
   end
 
   def play?
