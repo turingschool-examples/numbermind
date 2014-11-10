@@ -4,16 +4,17 @@ require 'message_printer'
 class CLI
   attr_reader :command, :printer
 
-  def initialize
-    @command = ""
-    @printer = MessagePrinter.new
+  def initialize(input_stream, output_stream)
+    @command      = ""
+    @printer      = MessagePrinter.new(output_stream)
+    @input_stream = input_stream
   end
 
   def start
     printer.intro
     until finished?
       printer.command_request
-      @command = gets.strip
+      @command = @input_stream.gets.strip
       process_initial_commands
     end
     printer.ending
