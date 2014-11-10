@@ -1,3 +1,6 @@
+require 'game'
+require 'message_printer'
+
 class CLI
   attr_reader :command, :printer
 

@@ -1,3 +1,5 @@
-Dir["./lib/*.rb"].each { |file| require file }
+lib_dir = File.expand_path('lib', __dir__)
+$LOAD_PATH.unshift(lib_dir)
+require 'cli'
 
 CLI.new.start
