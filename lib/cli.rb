@@ -29,6 +29,8 @@ class CLI
       game.play
     when instructions?
       printer.game_instructions
+    when finished?
+      printer.game_quit
     else
       printer.not_a_valid_command
     end
