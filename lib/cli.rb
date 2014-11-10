@@ -10,7 +10,7 @@ class CLI
     @input_stream = input_stream
   end
 
-  def start
+  def call
     printer.intro
     until finished?
       printer.command_request
