@@ -2,23 +2,27 @@ class Game
   attr_reader :guess,
               :turns,
               :random_number,
-              :printer,
-              :command
+              :messages,
+              :command,
+              :instream,
+              :outstream
 
-  def initialize(printer = MessagePrinter.new)
+  def initialize(instream, outstream, messages)
     @guess         = 0
     @turns         = 0
     @random_number = Random.rand(0..1000)
-    @printer       = printer
+    @messages      = messages
     @command       = ""
+    @instream      = instream
+    @outstream     = outstream
   end
 
   def play
-    printer.game_intro
+    outstream.puts messages.game_intro
     until win? || exit?
-      printer.turn_indicator(turns)
-      printer.game_command_request
-      @command = gets.strip
+      outstream.puts messages.turn_indicator(turns)
+      outstream.puts messages.game_command_request
+      @command = instream.gets.strip
       @guess   = command.to_i
       process_game_turn
     end
@@ -29,19 +33,19 @@ class Game
   def process_game_turn
     case
     when exit?
-      printer.game_quit
+      outstream.puts messages.game_quit
     when not_a_number?
-      printer.not_a_number
+      outstream.puts messages.not_a_number
     when win?
-      printer.game_win
+      outstream.puts messages.game_win
     when above?
-      printer.guess_above
+      outstream.puts messages.guess_above
       add_turn
     when below?
-      printer.guess_below
+      outstream.puts messages.guess_below
       add_turn
     when not_a_valid_number?
-      printer.not_a_valid_number
+      outstream.puts messages.not_a_valid_number
     end
   end
 
